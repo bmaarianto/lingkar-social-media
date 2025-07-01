@@ -1,56 +1,52 @@
-"use client"
+"use client";
 
-import { Link } from "react-router"
-import logo from "../assets/logo.svg"
-import { useState } from "react"
+import { Link } from "react-router";
+import logo from "../assets/logo.svg";
+import { useState } from "react";
 
 const Navbar = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleMobileLinkClick = () => {
-    setMobileMenuOpen(false)
-  }
+    setMobileMenuOpen(false);
+  };
 
   return (
-    <nav className="h-16 bg-secondary-dark border-b border-border-default sticky top-0 z-40 backdrop-blur-md">
-      <div className="max-w-container mx-auto px-6 h-full">
-        <div className="flex items-center justify-between h-full">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-secondary-dark/95 backdrop-blur-md border-b border-default">
+      <div className="container-custom">
+        <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center" style={{ outline: "none", border: "none", boxShadow: "none" }}>
+          <Link to="/" className="flex items-center outline-none">
             <img
-              src={logo || "/placeholder.svg?height=32&width=120"}
+              src={logo || "/placeholder.svg"}
               alt="logo"
-              className="h-8 w-auto hover:opacity-80 transition-opacity duration-200"
+              className="h-8 w-auto transition-transform duration-200 hover:scale-105"
             />
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-1">
             <Link
               to="/"
-              className="text-text-primary hover:text-accent transition-colors duration-200 font-medium"
-              style={{ outline: "none", border: "none", boxShadow: "none" }}
+              className="px-4 py-2 text-body-regular text-secondary hover:text-primary hover:bg-tertiary-dark/50 rounded-medium transition-all duration-200 outline-none"
             >
               Home
             </Link>
             <Link
               to="/create"
-              className="text-text-primary hover:text-accent transition-colors duration-200 font-medium"
-              style={{ outline: "none", border: "none", boxShadow: "none" }}
+              className="px-4 py-2 text-body-regular text-secondary hover:text-primary hover:bg-tertiary-dark/50 rounded-medium transition-all duration-200 outline-none"
             >
               Create Post
             </Link>
             <Link
               to="/communities"
-              className="text-text-primary hover:text-accent transition-colors duration-200 font-medium"
-              style={{ outline: "none", border: "none", boxShadow: "none" }}
+              className="px-4 py-2 text-body-regular text-secondary hover:text-primary hover:bg-tertiary-dark/50 rounded-medium transition-all duration-200 outline-none"
             >
               Communities
             </Link>
             <Link
               to="/community/create"
-              className="bg-accent text-white px-4 py-2 rounded-small font-medium hover:bg-accent-hover transition-colors duration-200"
-              style={{ outline: "none", border: "none", boxShadow: "none" }}
+              className="ml-4 px-6 py-2 bg-accent hover:bg-accent-hover text-white text-body-small font-medium rounded-small transition-all duration-200 outline-none hover:scale-105"
             >
               Create Community
             </Link>
@@ -59,89 +55,82 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-text-primary hover:text-accent transition-colors duration-200"
-            style={{ outline: "none", border: "none", boxShadow: "none" }}
-            aria-label="Toggle menu"
+            className="md:hidden p-2 text-secondary hover:text-primary hover:bg-tertiary-dark/50 rounded-small transition-all duration-200 outline-none"
+            aria-label="Toggle mobile menu"
+            aria-expanded={mobileMenuOpen}
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
               {mobileMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
               )}
             </svg>
           </button>
         </div>
 
         {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden absolute top-full left-0 right-0 bg-secondary-dark border-b border-border-default shadow-lg">
-            <div className="px-6 py-4 space-y-3">
-              <div onClick={handleMobileLinkClick} style={{ outline: "none", border: "none", boxShadow: "none" }}>
-                <Link
-                  to="/"
-                  className="block text-text-primary hover:text-accent transition-colors duration-200 font-medium py-2"
-                  style={{
-                    outline: "none !important",
-                    border: "none !important",
-                    boxShadow: "none !important",
-                    WebkitTapHighlightColor: "transparent",
-                  }}
-                >
-                  Home
-                </Link>
-              </div>
+        <div
+          className={`md:hidden transition-all duration-300 ease-in-out overflow-hidden ${
+            mobileMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+          }`}
+        >
+          <div className="py-4 space-y-1 border-t border-default/50">
+            <div onClick={handleMobileLinkClick}>
+              <Link
+                to="/"
+                className="block px-4 py-3 text-body-regular text-secondary hover:text-primary hover:bg-tertiary-dark/50 rounded-medium transition-all duration-200 outline-none"
+              >
+                Home
+              </Link>
+            </div>
 
-              <div onClick={handleMobileLinkClick} style={{ outline: "none", border: "none", boxShadow: "none" }}>
-                <Link
-                  to="/create"
-                  className="block text-text-primary hover:text-accent transition-colors duration-200 font-medium py-2"
-                  style={{
-                    outline: "none !important",
-                    border: "none !important",
-                    boxShadow: "none !important",
-                    WebkitTapHighlightColor: "transparent",
-                  }}
-                >
-                  Create Post
-                </Link>
-              </div>
+            <div onClick={handleMobileLinkClick}>
+              <Link
+                to="/create"
+                className="block px-4 py-3 text-body-regular text-secondary hover:text-primary hover:bg-tertiary-dark/50 rounded-medium transition-all duration-200 outline-none"
+              >
+                Create Post
+              </Link>
+            </div>
 
-              <div onClick={handleMobileLinkClick} style={{ outline: "none", border: "none", boxShadow: "none" }}>
-                <Link
-                  to="/communities"
-                  className="block text-text-primary hover:text-accent transition-colors duration-200 font-medium py-2"
-                  style={{
-                    outline: "none !important",
-                    border: "none !important",
-                    boxShadow: "none !important",
-                    WebkitTapHighlightColor: "transparent",
-                  }}
-                >
-                  Communities
-                </Link>
-              </div>
+            <div onClick={handleMobileLinkClick}>
+              <Link
+                to="/communities"
+                className="block px-4 py-3 text-body-regular text-secondary hover:text-primary hover:bg-tertiary-dark/50 rounded-medium transition-all duration-200 outline-none"
+              >
+                Communities
+              </Link>
+            </div>
 
-              <div onClick={handleMobileLinkClick} style={{ outline: "none", border: "none", boxShadow: "none" }}>
-                <Link
-                  to="/community/create"
-                  className="block bg-accent text-white px-4 py-2 rounded-small font-medium hover:bg-accent-hover transition-colors duration-200 text-center mt-4"
-                  style={{
-                    outline: "none !important",
-                    border: "none !important",
-                    boxShadow: "none !important",
-                    WebkitTapHighlightColor: "transparent",
-                  }}
-                >
-                  Create Community
-                </Link>
-              </div>
+            <div onClick={handleMobileLinkClick} className="pt-2 px-4">
+              <Link
+                to="/community/create"
+                className="block w-full text-center px-6 py-3 bg-accent hover:bg-accent-hover text-white text-body-regular font-medium rounded-medium transition-all duration-200 outline-none"
+              >
+                Create Community
+              </Link>
             </div>
           </div>
-        )}
+        </div>
       </div>
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
