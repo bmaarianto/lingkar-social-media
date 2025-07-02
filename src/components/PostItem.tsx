@@ -1,21 +1,21 @@
-import { Link } from "react-router"
-import type { Post } from "./PostList"
+import { Link } from "react-router";
+import type { Post } from "./PostList";
 
 interface Props {
-  post: Post
+  post: Post;
 }
 
 const PostItem = ({ post }: Props) => {
   const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
+    const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",
       day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
-    })
-  }
+    });
+  };
 
   return (
     <article className="post-card group cursor-pointer">
@@ -23,7 +23,12 @@ const PostItem = ({ post }: Props) => {
         {/* Header: Avatar and Title */}
         <div className="flex items-start space-x-3 mb-4">
           <div className="w-10 h-10 bg-accent/20 rounded-full flex items-center justify-center flex-shrink-0">
-            <svg className="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg
+              className="w-5 h-5 text-accent"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -36,13 +41,17 @@ const PostItem = ({ post }: Props) => {
             <h3 className="text-headline-3 text-primary font-semibold group-hover:text-accent transition-colors duration-200 line-clamp-2">
               {post.title}
             </h3>
-            <p className="text-body-small text-secondary mt-1">{formatDate(post.created_at)}</p>
+            <p className="text-body-small text-secondary mt-1">
+              {formatDate(post.created_at)}
+            </p>
           </div>
         </div>
 
         {/* Content Preview */}
         <div className="mb-4">
-          <p className="text-body-regular text-secondary line-clamp-3 leading-relaxed">{post.content}</p>
+          <p className="text-body-regular text-secondary line-clamp-3 leading-relaxed">
+            {post.content}
+          </p>
         </div>
 
         {/* Image Banner */}
@@ -58,10 +67,15 @@ const PostItem = ({ post }: Props) => {
         )}
 
         {/* Footer Actions */}
-        <div className="flex items-center justify-between pt-3 border-t border-border-light/30">
+        <div className="flex items-center pt-3 border-t border-border-light/30">
           <div className="flex items-center space-x-4">
             <button className="flex items-center space-x-2 text-secondary hover:text-accent transition-colors duration-200">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -72,7 +86,12 @@ const PostItem = ({ post }: Props) => {
               <span className="text-body-small">Like</span>
             </button>
             <button className="flex items-center space-x-2 text-secondary hover:text-accent transition-colors duration-200">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -83,21 +102,10 @@ const PostItem = ({ post }: Props) => {
               <span className="text-body-small">Comment</span>
             </button>
           </div>
-          <button className="flex items-center space-x-2 text-secondary hover:text-accent transition-colors duration-200">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"
-              />
-            </svg>
-            <span className="text-body-small">Share</span>
-          </button>
         </div>
       </Link>
     </article>
-  )
-}
+  );
+};
 
-export default PostItem
+export default PostItem;
