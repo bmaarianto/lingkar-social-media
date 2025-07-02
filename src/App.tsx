@@ -1,6 +1,7 @@
-import { Route, Routes } from "react-router"
-import Home from "./pages/Home"
-import Navbar from "./components/Navbar"
+import { Route, Routes } from "react-router";
+import Home from "./pages/Home";
+import Navbar from "./components/Navbar";
+import CreatePostPage from "./pages/CreatePostPage";
 
 const App = () => {
   return (
@@ -11,10 +12,11 @@ const App = () => {
       <main className="pt-16">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/create" element={<CreatePostPage />} />
         </Routes>
       </main>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
