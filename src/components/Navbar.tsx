@@ -61,7 +61,7 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-secondary-dark/95 backdrop-blur-md border-b border-default">
+    <nav className="bg-secondary-dark border-b border-default sticky top-0 z-50">
       <div className="px-4 md:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -78,12 +78,6 @@ const Navbar = () => {
             <Link to="/" className={getLinkClasses("/")}>
               Home
               {isActiveLink("/") && (
-                <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-accent rounded-full"></div>
-              )}
-            </Link>
-            <Link to="/create" className={getLinkClasses("/create")}>
-              Create Post
-              {isActiveLink("/create") && (
                 <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-accent rounded-full"></div>
               )}
             </Link>
@@ -207,15 +201,6 @@ const Navbar = () => {
               <Link to="/" className={getMobileLinkClasses("/")}>
                 Home
                 {isActiveLink("/") && (
-                  <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-1 h-6 bg-accent rounded-r-full"></div>
-                )}
-              </Link>
-            </div>
-
-            <div onClick={handleMobileLinkClick}>
-              <Link to="/create" className={getMobileLinkClasses("/create")}>
-                Create Post
-                {isActiveLink("/create") && (
                   <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-1 h-6 bg-accent rounded-r-full"></div>
                 )}
               </Link>

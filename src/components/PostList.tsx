@@ -1,13 +1,11 @@
 "use client"
 
 import { useQuery } from "@tanstack/react-query"
-import { Link } from "react-router"
 import { supabase } from "../supabase-client"
 import PostItem from "./PostItem"
 
 export interface Post {
   id: number
-  title: string
   content: string
   created_at: string
   image_url: string
@@ -97,9 +95,6 @@ const PostList = () => {
         <p className="text-body-regular text-secondary mb-6 max-w-md mx-auto">
           Be the first to share something with the community! Create your first post and start the conversation.
         </p>
-        <Link to="/create" className="btn-primary">
-          Create First Post
-        </Link>
       </div>
     )
   }
@@ -109,6 +104,21 @@ const PostList = () => {
       {data.map((post) => (
         <PostItem post={post} key={post.id} />
       ))}
+
+      {/* End of Posts Indicator - Simplified */}
+      {data && data.length > 0 && (
+        <div className="text-center py-2">
+          <div className="inline-flex items-center justify-center w-12 h-12 bg-tertiary-dark/30 rounded-full mb-4">
+            <svg className="w-6 h-6 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <h3 className="text-body-large text-primary font-medium mb-2">You're all caught up!</h3>
+          <p className="text-body-small text-muted">
+            {data.length} post{data.length !== 1 ? "s" : ""} in your feed
+          </p>
+        </div>
+      )}
     </div>
   )
 }
