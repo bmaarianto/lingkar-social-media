@@ -2,7 +2,7 @@ import PostList from "../components/PostList"
 
 const Home = () => {
   return (
-    <div className="min-h-screen bg-primary-dark pt-16 md:pt-10">
+    <div className="min-h-screen bg-primary-dark pt-4 md:pt-10">
       <div className="container-custom py-6 md:py-8">
         <div className="max-w-2xl mx-auto">
           {/* Header */}
