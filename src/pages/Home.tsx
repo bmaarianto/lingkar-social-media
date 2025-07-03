@@ -1,13 +1,36 @@
 "use client"
 
 import { useState } from "react"
+import { useNavigate } from "react-router"
 import PostList from "../components/PostList"
 import CreatePostModal from "../components/CreatePostModal"
 import { useAuth } from "../context/AuthContext"
 
 const Home = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
+  const navigate = useNavigate()
   const { user } = useAuth()
+
+  // Update mobile state on resize
+  useState(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  })
+
+  const handleCreatePost = () => {
+    if (isMobile) {
+      // Navigate to create post page on mobile
+      navigate("/create")
+    } else {
+      // Open modal on desktop
+      setIsCreateModalOpen(true)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-primary-dark pt-4 md:pt-4">
@@ -17,7 +40,7 @@ const Home = () => {
           {user && (
             <div className="mb-6">
               <button
-                onClick={() => setIsCreateModalOpen(true)}
+                onClick={handleCreatePost}
                 className="w-full bg-secondary-dark border border-border-light rounded-large p-4 text-left hover:bg-tertiary-dark/50 transition-all duration-200 group"
               >
                 <div className="flex items-center space-x-3">
@@ -54,8 +77,8 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Create Post Modal */}
-      <CreatePostModal isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)} />
+      {/* Create Post Modal - Desktop Only */}
+      {!isMobile && <CreatePostModal isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)} />}
     </div>
   )
 }

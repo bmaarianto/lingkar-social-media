@@ -1,7 +1,11 @@
 "use client"
 
-import { Link } from "react-router"
+import type React from "react"
+import { useState } from "react"
+import { useNavigate } from "react-router"
 import type { Post } from "./PostList"
+import PostDetailModal from "./PostDetailModal"
+import PostActions from "./PostActions"
 import { useAuth } from "../context/AuthContext"
 
 interface Props {
@@ -9,6 +13,21 @@ interface Props {
 }
 
 const PostItem = ({ post }: Props) => {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
+  const navigate = useNavigate()
+  const { user } = useAuth()
+
+  // Update mobile state on resize
+  useState(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  })
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
     return date.toLocaleDateString("en-US", {
@@ -20,18 +39,35 @@ const PostItem = ({ post }: Props) => {
     })
   }
 
-  const { user } = useAuth()
-  const displayName = user?.user_metadata.user_name || user?.email || "Anonymous"
+  const handleClick = (e: React.MouseEvent) => {
+    // Don't trigger if clicking on action buttons
+    const target = e.target as HTMLElement
+    if (target.closest("button") || target.closest('[role="button"]')) {
+      return
+    }
+
+    e.preventDefault()
+
+    if (isMobile) {
+      // Navigate to full page on mobile
+      navigate(`/post/${post.id}`)
+    } else {
+      // Open modal on desktop
+      setIsModalOpen(true)
+    }
+  }
+
+  const displayName = post.user_name || user?.user_metadata.user_name || user?.email || "Anonymous"
 
   return (
-    <article className="post-card group cursor-pointer">
-      <Link to={`/post/${post.id}`} className="block">
+    <>
+      <article className="post-card group cursor-pointer" onClick={handleClick}>
         {/* Header: Avatar and User Info */}
         <div className="flex items-center space-x-3 mb-4">
           <div className="w-10 h-10 bg-accent/20 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden">
-            {user?.user_metadata.avatar_url ? (
+            {post.avatar_url ? (
               <img
-                src={user.user_metadata.avatar_url || "/placeholder.svg"}
+                src={post.avatar_url || "/placeholder.svg"}
                 alt="User Avatar"
                 className="w-full h-full object-cover rounded-full"
               />
@@ -57,7 +93,7 @@ const PostItem = ({ post }: Props) => {
 
         {/* Content */}
         <div className="mb-4">
-          <p className="text-body-regular text-primary leading-relaxed">{post.content}</p>
+          <p className="text-body-regular text-primary leading-relaxed line-clamp-3">{post.content}</p>
         </div>
 
         {/* Image Banner */}
@@ -72,36 +108,15 @@ const PostItem = ({ post }: Props) => {
           </div>
         )}
 
-        {/* Footer Actions */}
-        <div className="flex items-center pt-3 border-t border-border-light/30">
-          <div className="flex items-center space-x-4">
-            <button className="flex items-center space-x-2 text-secondary hover:text-accent transition-colors duration-200">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                />
-              </svg>
-              <span className="text-body-small">Like</span>
-            </button>
-
-            <button className="flex items-center space-x-2 text-secondary hover:text-accent transition-colors duration-200">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                />
-              </svg>
-              <span className="text-body-small">Comment</span>
-            </button>
-          </div>
+        {/* Post Actions - Prevent click propagation */}
+        <div onClick={(e) => e.stopPropagation()}>
+          <PostActions postId={post.id} />
         </div>
-      </Link>
-    </article>
+      </article>
+
+      {/* Desktop Modal */}
+      {!isMobile && <PostDetailModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} postId={post.id} />}
+    </>
   )
 }
 

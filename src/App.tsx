@@ -1,20 +1,37 @@
-import { Route, Routes } from "react-router"
-import Home from "./pages/Home"
-import Navbar from "./components/Navbar"
+import { Route, Routes, useLocation } from "react-router";
+import Home from "./pages/Home";
+import PostPage from "./pages/PostPage";
+import CreatePostPage from "./pages/CreatePostPage";
+import Navbar from "./components/Navbar";
+import BackNavbar from "./components/BackNavbar";
 
 const App = () => {
+  const location = useLocation();
+
+  // Determine which navbar to show based on route
+  const isBackNavbarRoute =
+    location.pathname.startsWith("/post/") || location.pathname === "/create";
+
+  const getNavbarTitle = () => {
+    if (location.pathname === "/create") return "Create Post";
+    if (location.pathname.startsWith("/post/")) return "Post";
+    return undefined;
+  };
+
   return (
     <div className="min-h-screen bg-primary-dark">
-      <Navbar />
+      {isBackNavbarRoute ? <BackNavbar title={getNavbarTitle()} /> : <Navbar />}
 
-      {/* Main Content Area - no padding needed since navbar is not fixed */}
+      {/* Main Content Area */}
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/post/:id" element={<PostPage />} />
+          <Route path="/create" element={<CreatePostPage />} />
         </Routes>
       </main>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
