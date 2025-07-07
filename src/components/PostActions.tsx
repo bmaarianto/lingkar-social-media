@@ -135,7 +135,7 @@ const PostActions = ({ postId }: Props) => {
         <button
           onClick={handleLike}
           disabled={isPending}
-          className={`flex items-center space-x-2 px-3 py-2 rounded-medium transition-all duration-200 outline-none group ${
+          className={`flex cursor-pointer items-center space-x-2 px-3 py-2 rounded-medium transition-all duration-200 outline-none group ${
             isLiked
               ? "text-error bg-error/10 hover:bg-error/20"
               : "text-secondary hover:text-error hover:bg-error/10"
@@ -164,7 +164,7 @@ const PostActions = ({ postId }: Props) => {
         </button>
 
         {/* Comment Button */}
-        <button className="flex items-center space-x-2 px-3 py-2 text-secondary hover:text-accent hover:bg-accent/10 rounded-medium transition-all duration-200 outline-none group">
+        <button className="flex cursor-pointer items-center space-x-2 px-3 py-2 text-secondary hover:text-accent hover:bg-accent/10 rounded-medium transition-all duration-200 outline-none group">
           <svg
             className="w-5 h-5 transition-transform duration-200 group-hover:scale-110"
             fill="none"

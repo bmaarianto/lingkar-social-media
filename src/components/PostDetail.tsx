@@ -7,6 +7,7 @@ import { supabase } from "../supabase-client";
 import { useAuth } from "../context/AuthContext";
 import PostActions from "./PostActions";
 import { PostSkeleton } from "./SkeletonLoader";
+import CommentSection from "./CommentSection";
 
 interface Props {
   postId: number;
@@ -293,6 +294,9 @@ const PostDetail = ({
 
       {/* Actions */}
       <PostActions postId={postId} />
+
+      {/* Comments Section */}
+      <CommentSection postId={postId} />
     </div>
   );
 
@@ -303,34 +307,7 @@ const PostDetail = ({
   return (
     <div className="min-h-screen bg-primary-dark pt-4 md:pt-4">
       <div className="container-custom py-6 md:py-8">
-        <div className="max-w-2xl mx-auto">
-          {/* Back Button for Page View - Only show if showBackButton is true */}
-          {showBackButton && (
-            <div className="mb-6">
-              <button
-                onClick={handleBack}
-                className="flex items-center space-x-2 px-3 py-2 text-secondary hover:text-primary hover:bg-tertiary-dark/50 rounded-medium transition-all duration-200"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 19l-7-7 7-7"
-                  />
-                </svg>
-                <span className="text-body-small font-medium">Back</span>
-              </button>
-            </div>
-          )}
-
-          {content}
-        </div>
+        <div className="max-w-2xl mx-auto">{content}</div>
       </div>
     </div>
   );
