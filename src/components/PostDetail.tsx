@@ -6,6 +6,7 @@ import type { Post } from "./PostList";
 import { supabase } from "../supabase-client";
 import { useAuth } from "../context/AuthContext";
 import PostActions from "./PostActions";
+import { PostSkeleton } from "./SkeletonLoader";
 
 interface Props {
   postId: number;
@@ -76,47 +77,14 @@ const PostDetail = ({
             {/* Back Button for Page View - Only show if showBackButton is true */}
             {!isModal && showBackButton && (
               <div className="mb-6">
-                <button
-                  onClick={handleBack}
-                  className="flex items-center space-x-2 px-3 py-2 text-secondary hover:text-primary hover:bg-tertiary-dark/50 rounded-medium transition-all duration-200"
-                >
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 19l-7-7 7-7"
-                    />
-                  </svg>
-                  <span className="text-body-small font-medium">Back</span>
-                </button>
+                <div className="flex items-center space-x-2 px-3 py-2">
+                  <div className="w-5 h-5 bg-tertiary-dark rounded skeleton"></div>
+                  <div className="w-12 h-4 bg-tertiary-dark rounded skeleton"></div>
+                </div>
               </div>
             )}
 
-            <div className="post-card">
-              <div className="flex items-start space-x-3 mb-4">
-                <div className="w-12 h-12 bg-tertiary-dark rounded-full skeleton"></div>
-                <div className="flex-1 space-y-2">
-                  <div className="h-6 bg-tertiary-dark rounded skeleton w-3/4"></div>
-                  <div className="h-4 bg-tertiary-dark rounded skeleton w-1/2"></div>
-                </div>
-              </div>
-              <div className="space-y-3 mb-6">
-                <div className="h-4 bg-tertiary-dark rounded skeleton"></div>
-                <div className="h-4 bg-tertiary-dark rounded skeleton w-5/6"></div>
-                <div className="h-4 bg-tertiary-dark rounded skeleton w-4/6"></div>
-              </div>
-              <div className="h-64 bg-tertiary-dark rounded-medium skeleton mb-6"></div>
-              <div className="flex items-center space-x-4">
-                <div className="h-10 w-20 bg-tertiary-dark rounded skeleton"></div>
-                <div className="h-10 w-24 bg-tertiary-dark rounded skeleton"></div>
-              </div>
-            </div>
+            <PostSkeleton showActions={true} showImage={true} compact={false} />
           </div>
         </div>
       </div>
@@ -335,7 +303,34 @@ const PostDetail = ({
   return (
     <div className="min-h-screen bg-primary-dark pt-4 md:pt-4">
       <div className="container-custom py-6 md:py-8">
-        <div className="max-w-2xl mx-auto">{content}</div>
+        <div className="max-w-2xl mx-auto">
+          {/* Back Button for Page View - Only show if showBackButton is true */}
+          {showBackButton && (
+            <div className="mb-6">
+              <button
+                onClick={handleBack}
+                className="flex items-center space-x-2 px-3 py-2 text-secondary hover:text-primary hover:bg-tertiary-dark/50 rounded-medium transition-all duration-200"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+                <span className="text-body-small font-medium">Back</span>
+              </button>
+            </div>
+          )}
+
+          {content}
+        </div>
       </div>
     </div>
   );

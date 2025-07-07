@@ -1,18 +1,19 @@
-"use client"
+"use client";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { supabase } from "../supabase-client"
-import { useAuth } from "../context/AuthContext"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "../supabase-client";
+import { useAuth } from "../context/AuthContext";
+import { Skeleton } from "./SkeletonLoader";
 
 interface Props {
-  postId: number
+  postId: number;
 }
 
 interface Like {
-  id: number
-  post_id: number
-  user_id: string
-  like: number
+  id: number;
+  post_id: number;
+  user_id: string;
+  like: number;
 }
 
 const like = async (likeValue: number, postId: number, userId: string) => {
@@ -21,30 +22,38 @@ const like = async (likeValue: number, postId: number, userId: string) => {
     .select("*")
     .eq("post_id", postId)
     .eq("user_id", userId)
-    .maybeSingle()
+    .maybeSingle();
 
   if (existingLike) {
     if (existingLike.like === likeValue) {
-      const { error } = await supabase.from("likes").delete().eq("id", existingLike.id)
-      if (error) throw new Error(error.message)
+      const { error } = await supabase
+        .from("likes")
+        .delete()
+        .eq("id", existingLike.id);
+      if (error) throw new Error(error.message);
     }
   } else {
-    const { error } = await supabase.from("likes").insert({ post_id: postId, user_id: userId, like: likeValue })
-    if (error) throw new Error(error.message)
+    const { error } = await supabase
+      .from("likes")
+      .insert({ post_id: postId, user_id: userId, like: likeValue });
+    if (error) throw new Error(error.message);
   }
-}
+};
 
 const fetchLikes = async (postId: number): Promise<Like[]> => {
-  const { data, error } = await supabase.from("likes").select("*").eq("post_id", postId)
+  const { data, error } = await supabase
+    .from("likes")
+    .select("*")
+    .eq("post_id", postId);
 
-  if (error) throw new Error(error.message)
+  if (error) throw new Error(error.message);
 
-  return data as Like[]
-}
+  return data as Like[];
+};
 
 const PostActions = ({ postId }: Props) => {
-  const { user } = useAuth()
-  const queryClient = useQueryClient()
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
 
   const {
     data: likes,
@@ -54,40 +63,45 @@ const PostActions = ({ postId }: Props) => {
     queryKey: ["likes", postId],
     queryFn: () => fetchLikes(postId),
     refetchInterval: 5000,
-  })
+  });
 
   const { mutate, isPending } = useMutation({
     mutationFn: (likeValue: number) => {
-      if (!user) throw new Error("You must be logged in to like!")
-      return like(likeValue, postId, user.id)
+      if (!user) throw new Error("You must be logged in to like!");
+      return like(likeValue, postId, user.id);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["likes", postId] })
+      queryClient.invalidateQueries({ queryKey: ["likes", postId] });
     },
-  })
+  });
 
   if (isLoading) {
     return (
       <div className="flex items-center pt-3 border-t border-border-light/30">
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-2">
-            <div className="w-5 h-5 bg-tertiary-dark rounded skeleton"></div>
-            <div className="w-12 h-4 bg-tertiary-dark rounded skeleton"></div>
+            <Skeleton className="w-5 h-5 rounded" />
+            <Skeleton className="w-12 h-4 rounded" />
           </div>
           <div className="flex items-center space-x-2">
-            <div className="w-5 h-5 bg-tertiary-dark rounded skeleton"></div>
-            <div className="w-16 h-4 bg-tertiary-dark rounded skeleton"></div>
+            <Skeleton className="w-5 h-5 rounded" />
+            <Skeleton className="w-16 h-4 rounded" />
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   if (error) {
     return (
       <div className="flex items-center pt-3 border-t border-border-light/30">
         <div className="flex items-center space-x-2 text-error">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -98,21 +112,21 @@ const PostActions = ({ postId }: Props) => {
           <span className="text-body-small">Failed to load interactions</span>
         </div>
       </div>
-    )
+    );
   }
 
-  const likesNumber = likes?.filter((like) => like.like === 1).length || 0
-  const userLike = likes?.find((like) => like.user_id === user?.id)?.like
-  const isLiked = userLike === 1
+  const likesNumber = likes?.filter((like) => like.like === 1).length || 0;
+  const userLike = likes?.find((like) => like.user_id === user?.id)?.like;
+  const isLiked = userLike === 1;
 
   const handleLike = () => {
     if (!user) {
       // Could show a toast or modal here
-      console.log("Please sign in to like posts")
-      return
+      console.log("Please sign in to like posts");
+      return;
     }
-    mutate(1)
-  }
+    mutate(1);
+  };
 
   return (
     <div className="flex items-center justify-between pt-4 border-t border-border-light/30">
@@ -122,8 +136,12 @@ const PostActions = ({ postId }: Props) => {
           onClick={handleLike}
           disabled={isPending}
           className={`flex items-center space-x-2 px-3 py-2 rounded-medium transition-all duration-200 outline-none group ${
-            isLiked ? "text-error bg-error/10 hover:bg-error/20" : "text-secondary hover:text-error hover:bg-error/10"
-          } ${isPending ? "opacity-50 cursor-not-allowed" : ""} ${!user ? "opacity-60" : ""}`}
+            isLiked
+              ? "text-error bg-error/10 hover:bg-error/20"
+              : "text-secondary hover:text-error hover:bg-error/10"
+          } ${isPending ? "opacity-50 cursor-not-allowed" : ""} ${
+            !user ? "opacity-60" : ""
+          }`}
         >
           <svg
             className={`w-5 h-5 transition-all duration-200 ${
@@ -164,7 +182,7 @@ const PostActions = ({ postId }: Props) => {
         </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default PostActions
+export default PostActions;

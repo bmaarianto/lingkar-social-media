@@ -3,6 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "../supabase-client";
 import PostItem from "./PostItem";
+import { PostListSkeleton } from "./SkeletonLoader";
 
 export interface Post {
   id: number;
@@ -31,34 +32,7 @@ const PostList = () => {
   });
 
   if (isLoading) {
-    return (
-      <div className="space-y-6">
-        {[...Array(3)].map((_, index) => (
-          <div key={index} className="post-card">
-            <div className="flex items-start space-x-3 mb-4">
-              <div className="w-10 h-10 bg-tertiary-dark rounded-full skeleton"></div>
-              <div className="flex-1 space-y-2">
-                <div className="h-5 bg-tertiary-dark rounded skeleton w-3/4"></div>
-                <div className="h-4 bg-tertiary-dark rounded skeleton w-1/2"></div>
-              </div>
-            </div>
-            <div className="space-y-2 mb-4">
-              <div className="h-4 bg-tertiary-dark rounded skeleton"></div>
-              <div className="h-4 bg-tertiary-dark rounded skeleton w-5/6"></div>
-              <div className="h-4 bg-tertiary-dark rounded skeleton w-4/6"></div>
-            </div>
-            <div className="h-48 bg-tertiary-dark rounded-medium skeleton mb-4"></div>
-            <div className="flex items-center justify-between pt-3 border-t border-border-light/30">
-              <div className="flex items-center space-x-4">
-                <div className="h-8 w-16 bg-tertiary-dark rounded skeleton"></div>
-                <div className="h-8 w-20 bg-tertiary-dark rounded skeleton"></div>
-              </div>
-              <div className="h-8 w-16 bg-tertiary-dark rounded skeleton"></div>
-            </div>
-          </div>
-        ))}
-      </div>
-    );
+    return <PostListSkeleton count={3} />;
   }
 
   if (error) {
