@@ -1,69 +1,72 @@
-# React + TypeScript + Vite
+# Lingkar
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Lingkar adalah aplikasi komunitas sosial berbasis web yang memungkinkan pengguna untuk membuat postingan, memberikan komentar, dan berinteraksi satu sama lain. Proyek ini dibangun menggunakan React, TypeScript, Vite, Supabase, dan TailwindCSS.
 
-Currently, two official plugins are available:
+## Fitur Utama
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Autentikasi GitHub**: Pengguna dapat masuk dan keluar menggunakan akun GitHub.
+- **Feed Postingan**: Lihat daftar postingan terbaru dari seluruh komunitas.
+- **Buat Postingan**: Pengguna yang sudah login dapat membuat postingan baru dengan teks dan gambar (opsional).
+- **Like & Komentar**: Setiap postingan dapat diberi like dan dikomentari oleh pengguna lain.
+- **Komentar Bersarang**: Komentar mendukung balasan (nested reply) hingga 3 tingkat.
+- **UI Responsif**: Tampilan modern dan responsif, optimal untuk desktop maupun mobile.
 
-## Expanding the ESLint configuration
+## Teknologi yang Digunakan
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- [React](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
+- [Vite](https://vitejs.dev/) (build tool)
+- [Supabase](https://supabase.com/) (database, storage, dan autentikasi)
+- [TailwindCSS](https://tailwindcss.com/) (utility-first CSS)
+- [React Query](https://tanstack.com/query/latest) (data fetching & caching)
+- [React Router](https://reactrouter.com/) (routing)
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Cara Menjalankan Project
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+1. **Clone repository:**
+   ```bash
+   git clone <repo-url>
+   cd lingkar
+   ```
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+3. **Konfigurasi Supabase:**
+   - Buat project di [Supabase](https://app.supabase.com/).
+   - Buat file `.env` di root project dan tambahkan:
+     ```
+     VITE_SUPABASE_URL=your_supabase_url
+     VITE_SUPABASE_KEY=your_supabase_anon_key
+     ```
+   - Pastikan storage bucket `post-images` sudah dibuat di Supabase Storage.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+4. **Jalankan aplikasi:**
+   ```bash
+   npm run dev
+   ```
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+5. **Akses di browser:**
+   ```
+   http://localhost:5173
+   ```
+
+## Struktur Halaman
+
+- **Home** (`/`): Feed postingan, tombol buat postingan, daftar postingan.
+- **Post Detail** (`/post/:id`): Detail postingan, komentar, balas komentar.
+- **Create Post** (`/create`): Form untuk membuat postingan baru.
+
+## Autentikasi
+
+- Hanya pengguna yang login (GitHub OAuth) yang dapat membuat postingan, memberi like, dan berkomentar.
+- Logout dan login dapat diakses dari menu profil.
+
+## Kontribusi
+
+Kontribusi sangat terbuka! Silakan fork repo ini, buat branch baru, dan ajukan pull request.
+
+## Lisensi
+
+MIT

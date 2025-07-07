@@ -93,7 +93,7 @@ const CommentItem = ({ comment, postId, depth = 0 }: Props) => {
 
   return (
     <div className={`${depth > 0 ? "ml-6 md:ml-8" : ""}`}>
-      <div className="flex items-start space-x-3 group">
+      <div className="flex items-start space-x-3 group hover:bg-tertiary-dark/20 rounded-medium p-2 -m-2 transition-colors duration-200">
         {/* Avatar */}
         <div className="w-8 h-8 bg-accent/20 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden">
           {comment.avatar_url ? (
@@ -140,7 +140,10 @@ const CommentItem = ({ comment, postId, depth = 0 }: Props) => {
           </div>
 
           {/* Actions */}
-          <div className="flex items-center space-x-4 mb-3">
+          <div
+            className="flex items-center space-x-4 mb-3"
+            onClick={(e) => e.stopPropagation()}
+          >
             {canReply && (
               <button
                 onClick={() => setShowReply(!showReply)}
@@ -194,7 +197,10 @@ const CommentItem = ({ comment, postId, depth = 0 }: Props) => {
 
           {/* Reply Form */}
           {showReply && (
-            <div className="mb-4 p-3 bg-tertiary-dark/20 border border-border-light/30 rounded-medium">
+            <div
+              className="mb-4 p-3 bg-tertiary-dark/20 border border-border-light/30 rounded-medium"
+              onClick={(e) => e.stopPropagation()}
+            >
               <form onSubmit={handleReplySubmit} className="space-y-3">
                 <div className="flex items-start space-x-2">
                   <div className="w-6 h-6 bg-accent/20 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden">
@@ -224,12 +230,11 @@ const CommentItem = ({ comment, postId, depth = 0 }: Props) => {
                   </div>
 
                   <div className="flex-1">
-                    <textarea
+                    <input
                       value={replyText}
                       onChange={(e) => setReplyText(e.target.value)}
                       placeholder={`Reply to ${comment.author}...`}
-                      rows={1}
-                      className="input-field resize-none text-body-small"
+                      className="input-field text-body-small"
                     />
                   </div>
                 </div>
