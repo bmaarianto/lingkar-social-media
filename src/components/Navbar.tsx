@@ -81,7 +81,7 @@ const Navbar = () => {
                 <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-accent rounded-full"></div>
               )}
             </Link>
-            <Link to="/communities" className={getLinkClasses("/communities")}>
+            {/* <Link to="/communities" className={getLinkClasses("/communities")}>
               Communities
               {isActiveLink("/communities") && (
                 <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-accent rounded-full"></div>
@@ -92,7 +92,7 @@ const Navbar = () => {
               {isActiveLink("/community/create") && (
                 <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-accent rounded-full"></div>
               )}
-            </Link>
+            </Link> */}
           </div>
 
           {/* Desktop Auth */}
@@ -206,7 +206,7 @@ const Navbar = () => {
               </Link>
             </div>
 
-            <div onClick={handleMobileLinkClick}>
+            {/* <div onClick={handleMobileLinkClick}>
               <Link to="/communities" className={getMobileLinkClasses("/communities")}>
                 Communities
                 {isActiveLink("/communities") && (
@@ -222,7 +222,7 @@ const Navbar = () => {
                   <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-1 h-6 bg-accent rounded-r-full"></div>
                 )}
               </Link>
-            </div>
+            </div> */}
 
             {/* Mobile Auth */}
             <div className="pt-4 px-4 border-t border-default/50 mt-4">

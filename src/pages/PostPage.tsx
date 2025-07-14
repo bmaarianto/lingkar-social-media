@@ -5,12 +5,15 @@ import PostDetail from "../components/PostDetail";
 
 const PostPage = () => {
   const { id } = useParams<{ id: string }>();
+  const isMobile = window.innerWidth < 768;
 
   if (!id) {
     return (
-      <div className="min-h-screen bg-primary-dark pt-4 md:pt-4">
-        <div className="container-custom py-6 md:py-8">
-          <div className="max-w-2xl mx-auto">
+      <div className="min-h-screen bg-primary-dark">
+        <div
+          className={`${isMobile ? "p-4" : "container-custom py-6 md:py-8"}`}
+        >
+          <div className={`${isMobile ? "" : "max-w-2xl mx-auto"}`}>
             <div className="post-card text-center py-8">
               <h3 className="text-headline-3 text-primary font-semibold mb-2">
                 Invalid Post ID

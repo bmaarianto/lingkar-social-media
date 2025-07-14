@@ -1,5 +1,6 @@
 "use client";
 
+import type React from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "../supabase-client";
 import { useAuth } from "../context/AuthContext";
@@ -7,6 +8,7 @@ import { Skeleton } from "./SkeletonLoader";
 
 interface Props {
   postId: number;
+  onCommentClick?: () => void; // Add callback for opening modal
 }
 
 interface Like {
@@ -51,7 +53,7 @@ const fetchLikes = async (postId: number): Promise<Like[]> => {
   return data as Like[];
 };
 
-const PostActions = ({ postId }: Props) => {
+const PostActions = ({ postId, onCommentClick }: Props) => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
@@ -74,6 +76,16 @@ const PostActions = ({ postId }: Props) => {
       queryClient.invalidateQueries({ queryKey: ["likes", postId] });
     },
   });
+
+  const handleCommentClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Use the callback if provided (for desktop modal)
+    if (onCommentClick) {
+      onCommentClick();
+    }
+  };
 
   if (isLoading) {
     return (
@@ -119,9 +131,11 @@ const PostActions = ({ postId }: Props) => {
   const userLike = likes?.find((like) => like.user_id === user?.id)?.like;
   const isLiked = userLike === 1;
 
-  const handleLike = () => {
+  const handleLike = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
     if (!user) {
-      // Could show a toast or modal here
       console.log("Please sign in to like posts");
       return;
     }
@@ -164,7 +178,10 @@ const PostActions = ({ postId }: Props) => {
         </button>
 
         {/* Comment Button */}
-        <button className="flex cursor-pointer items-center space-x-2 px-3 py-2 text-secondary hover:text-accent hover:bg-accent/10 rounded-medium transition-all duration-200 outline-none group">
+        <button
+          onClick={handleCommentClick}
+          className="flex cursor-pointer items-center space-x-2 px-3 py-2 text-secondary hover:text-accent hover:bg-accent/10 rounded-medium transition-all duration-200 outline-none group"
+        >
           <svg
             className="w-5 h-5 transition-transform duration-200 group-hover:scale-110"
             fill="none"

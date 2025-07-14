@@ -26,6 +26,7 @@ const fetchPosts = async (): Promise<Post[]> => {
 };
 
 const PostList = () => {
+  const isMobile = window.innerWidth < 768;
   const { data, error, isLoading } = useQuery<Post[], Error>({
     queryKey: ["posts"],
     queryFn: fetchPosts,
@@ -37,7 +38,11 @@ const PostList = () => {
 
   if (error) {
     return (
-      <div className="post-card text-center py-8">
+      <div
+        className={`${
+          isMobile ? "bg-secondary-dark p-4" : "post-card"
+        } text-center py-8`}
+      >
         <div className="w-16 h-16 mx-auto mb-4 bg-error/20 rounded-full flex items-center justify-center">
           <svg
             className="w-8 h-8 text-error"
@@ -69,7 +74,11 @@ const PostList = () => {
 
   if (!data || data.length === 0) {
     return (
-      <div className="post-card text-center py-12">
+      <div
+        className={`${
+          isMobile ? "bg-secondary-dark p-4" : "post-card"
+        } text-center py-12`}
+      >
         <div className="w-20 h-20 mx-auto mb-6 bg-tertiary-dark/50 rounded-full flex items-center justify-center">
           <svg
             className="w-10 h-10 text-muted"
@@ -97,14 +106,18 @@ const PostList = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className={`${isMobile ? "" : "space-y-6"}`}>
       {data.map((post) => (
         <PostItem post={post} key={post.id} />
       ))}
 
       {/* End of Posts Indicator - Simplified */}
       {data && data.length > 0 && (
-        <div className="text-center py-2">
+        <div
+          className={`text-center py-2 ${
+            isMobile ? "bg-secondary-dark border-t border-border-light/30" : ""
+          }`}
+        >
           <div className="inline-flex items-center justify-center w-12 h-12 bg-tertiary-dark/30 rounded-full mb-4">
             <svg
               className="w-6 h-6 text-muted"

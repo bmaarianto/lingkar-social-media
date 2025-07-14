@@ -46,6 +46,7 @@ const CreatePost = ({ onSuccess, onCancel, isModal = false }: Props) => {
   const [content, setContent] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const queryClient = useQueryClient();
+  const isMobile = window.innerWidth < 768;
 
   const { user } = useAuth();
 
@@ -94,9 +95,11 @@ const CreatePost = ({ onSuccess, onCancel, isModal = false }: Props) => {
 
   return (
     <div
-      className={`bg-secondary-dark border border-border-light rounded-large ${
-        isModal ? "p-6" : "p-6"
-      }`}
+      className={`${
+        isMobile && !isModal
+          ? "bg-secondary-dark border-0 rounded-none min-h-screen"
+          : "bg-secondary-dark border border-border-light rounded-large"
+      } ${isModal ? "p-6" : isMobile ? "p-4" : "p-6"}`}
     >
       {/* Modal Header */}
       {isModal && (
